@@ -1,0 +1,202 @@
+body::after {
+    content: "";
+    background-color: rgba(40, 19, 6, 0.4);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease 0s;
+    pointer-events: none;
+    z-index: 149;
+}
+.popup-show body::after {
+    opacity: 1;
+}
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 50px 10px;
+    transition: visibility 0.8s ease 0s;
+    visibility: hidden;
+    pointer-events: none;
+}
+.popup_show {
+    z-index: 150;
+    visibility: visible;
+    overflow: auto;
+    pointer-events: auto;
+}
+.popup_show .popup__content {
+    visibility: visible;
+    transform: scale(1);
+}
+.popup__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100%;
+    flex: 1 1 auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.popup__content {
+    position: relative;
+    visibility: hidden;
+    transform: scale(0);
+    transition: transform 0.3s ease 0s;
+    width: 100%;
+    border-radius: 25px;
+    max-width: 480px;
+    background-color: #fff;
+    box-shadow: 0 5px 60px 0 rgba(40, 19, 6, 0.08);
+    .lock & {
+        visibility: visible;
+    }
+}
+
+.popup__close {
+    cursor: pointer;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 12;
+    transition: opacity 0.3s;
+    border-radius: 12px;
+    overflow: hidden;
+    @media (max-width: 480px) {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        top: -8px;
+        right: -8px;
+    }
+    &::before {
+        content: "";
+        position: absolute;
+        background: linear-gradient(90deg, #b76d43 0%, #a96b45 100%);
+        backdrop-filter: blur(5px);
+        border-radius: 12px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        @media (max-width: 480px) {
+            border-radius: 8px;
+        }
+    }
+    img {
+        position: relative;
+        z-index: 10;
+        width: 15px;
+        height: 15px;
+        @media (max-width: 480px) {
+            width: 10px;
+            height: 10px;
+        }
+    }
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
+.popup {
+    // .popup__body
+
+    &__body {
+        form {
+            flex: 1 1 auto;
+            margin: 0px 10px 10px 10px;
+            border-radius: 15px;
+            background-color: #f7f2ec;
+            padding: 40px 40px 35px 40px;
+            gap: 30px;
+            @media (max-width: 768px) {
+                gap: 20px;
+            }
+            @media (max-width: 480px) {
+                padding: 30px 10px;
+            }
+            @media (max-width: 480px) {
+                padding: 20px 10px;
+            }
+        }
+        .form__text {
+            max-width: 270px;
+            margin: 0 auto;
+            gap: 6px;
+            font-size: 13px;
+            line-height: 138%;
+            color: rgba(40, 19, 6, 0.5);
+            img {
+                width: 12px;
+                height: 12px;
+                margin: 6px 0px 0px 0px;
+            }
+            a {
+                font-weight: 500;
+                text-decoration: underline;
+                text-decoration-skip-ink: none;
+                color: #3bc52c;
+                span {
+                    background: linear-gradient(134deg, #3bc52c 0%, #88c74d 100%);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+        }
+        .form__inputs {
+            grid-template-columns: 1fr;
+            input {
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 171%;
+                @media (max-width: 480px) {
+                    height: 60px;
+                    padding: 5px 24px 5px 45px;
+                }
+            }
+        }
+        .form__icon {
+            @media (max-width: 480px) {
+                top: 19px;
+                left: 15px;
+            }
+        }
+        .form__placeholder {
+            @media (max-width: 480px) {
+                left: 45px;
+            }
+        }
+    }
+
+    // .popup__title
+
+    &__title {
+        font-weight: 800;
+        font-size: 44px;
+        line-height: 125%;
+        text-align: center;
+        padding: 40px 10px 30px 10px;
+        @media (max-width: 768px) {
+            font-size: 36px;
+            padding: 30px 10px 20px 10px;
+        }
+        @media (max-width: 480px) {
+            padding: 20px 10px;
+            font-size: 28px;
+        }
+    }
+}
