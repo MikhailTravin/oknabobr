@@ -47,9 +47,11 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: transparent;
+            background: linear-gradient(135.77deg, #3bc52c 0%, #77b63c 100%);
             border-radius: 10px;
             z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         &.filled {
             .form__placeholder {
@@ -59,7 +61,7 @@
         &._form-focus {
             &::before {
                 content: "";
-                background: linear-gradient(135.77deg, #3bc52c 0%, #77b63c 100%);
+                opacity: 1;
             }
             .form__icon {
                 filter: invert(50%) sepia(8%) saturate(3348%) hue-rotate(84deg) brightness(120%) contrast(86%);
