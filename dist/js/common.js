@@ -197,10 +197,8 @@ class SelectConstructor {
                 _slideToggle(selectOptions, originalSelect.dataset.speed);
 
                 if (selectItem.classList.contains(this.selectClasses.classSelectOpen)) {
-                    selectItem.style.zIndex = selectOpenzIndex;
                 } else {
                     setTimeout(() => {
-                        selectItem.style.zIndex = '';
                     }, originalSelect.dataset.speed);
                 }
             }

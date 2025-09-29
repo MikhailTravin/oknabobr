@@ -43,40 +43,53 @@ function functions_FLS(message) {
 let _slideUp = (target, duration = 500, showmore = 0) => {
   if (!target.classList.contains("_slide")) {
     target.classList.add("_slide");
-    target.style.transitionProperty = "height, margin, padding";
+    target.style.transitionProperty = "height, margin, padding, opacity";
     target.style.transitionDuration = duration + "ms";
     target.style.height = `${target.offsetHeight}px`;
     target.offsetHeight;
     target.style.overflow = "hidden";
-    target.style.height = showmore ? `${showmore}px` : `0px`;
-    target.style.paddingTop = 0;
-    target.style.paddingBottom = 0;
-    target.style.marginTop = 0;
-    target.style.marginBottom = 0;
-    window.setTimeout((() => {
+    target.style.opacity = "1"; // Начальное состояние
+
+    // Плавное исчезновение
+    requestAnimationFrame(() => {
+      target.style.opacity = "0";
+      target.style.height = showmore ? `${showmore}px` : `0px`;
+      target.style.paddingTop = 0;
+      target.style.paddingBottom = 0;
+      target.style.marginTop = 0;
+      target.style.marginBottom = 0;
+    });
+
+    window.setTimeout(() => {
       target.hidden = !showmore ? true : false;
-      !showmore ? target.style.removeProperty("height") : null;
+      if (!showmore) {
+        target.style.removeProperty("height");
+      }
       target.style.removeProperty("padding-top");
       target.style.removeProperty("padding-bottom");
       target.style.removeProperty("margin-top");
       target.style.removeProperty("margin-bottom");
-      !showmore ? target.style.removeProperty("overflow") : null;
+      target.style.removeProperty("overflow");
+      target.style.removeProperty("opacity");
       target.style.removeProperty("transition-duration");
       target.style.removeProperty("transition-property");
       target.classList.remove("_slide");
+
       document.dispatchEvent(new CustomEvent("slideUpDone", {
-        detail: {
-          target
-        }
+        detail: { target }
       }));
-    }), duration);
+    }, duration);
   }
 };
 let _slideDown = (target, duration = 500, showmore = 0) => {
   if (!target.classList.contains("_slide")) {
     target.classList.add("_slide");
     target.hidden = target.hidden ? false : null;
-    showmore ? target.style.removeProperty("height") : null;
+
+    if (showmore) {
+      target.style.removeProperty("height");
+    }
+
     let height = target.offsetHeight;
     target.style.overflow = "hidden";
     target.style.height = showmore ? `${showmore}px` : `0px`;
@@ -84,26 +97,34 @@ let _slideDown = (target, duration = 500, showmore = 0) => {
     target.style.paddingBottom = 0;
     target.style.marginTop = 0;
     target.style.marginBottom = 0;
-    target.offsetHeight;
-    target.style.transitionProperty = "height, margin, padding";
+    target.style.opacity = "0"; // Начальное состояние
+
+    target.offsetHeight; // Force reflow
+
+    target.style.transitionProperty = "height, margin, padding, opacity";
     target.style.transitionDuration = duration + "ms";
-    target.style.height = height + "px";
-    target.style.removeProperty("padding-top");
-    target.style.removeProperty("padding-bottom");
-    target.style.removeProperty("margin-top");
-    target.style.removeProperty("margin-bottom");
-    window.setTimeout((() => {
+
+    requestAnimationFrame(() => {
+      target.style.opacity = "1";
+      target.style.height = height + "px";
+      target.style.removeProperty("padding-top");
+      target.style.removeProperty("padding-bottom");
+      target.style.removeProperty("margin-top");
+      target.style.removeProperty("margin-bottom");
+    });
+
+    window.setTimeout(() => {
       target.style.removeProperty("height");
       target.style.removeProperty("overflow");
+      target.style.removeProperty("opacity");
       target.style.removeProperty("transition-duration");
       target.style.removeProperty("transition-property");
       target.classList.remove("_slide");
+
       document.dispatchEvent(new CustomEvent("slideDownDone", {
-        detail: {
-          target
-        }
+        detail: { target }
       }));
-    }), duration);
+    }, duration);
   }
 };
 let _slideToggle = (target, duration = 500) => {
@@ -216,9 +237,55 @@ if (catalogMenu) {
 }
 
 let searchButton = document.querySelector('.search__button');
-if (searchButton) {
+let searchInput = document.querySelector('.search__input input');
+
+if (searchButton && searchInput) {
+  // Обработчик клика по кнопке поиска
   searchButton.addEventListener("click", function (e) {
-    this.closest('.search').classList.toggle('_active');
+    e.stopPropagation(); // Предотвращаем всплытие события
+    let search = this.closest('.search');
+    search.classList.toggle('_active');
+
+    // Если поиск стал активным, ставим фокус в input
+    if (search.classList.contains('_active')) {
+      searchInput.focus();
+    }
+  });
+
+  // Обработчик клика по input (предотвращает закрытие при клике внутри input)
+  searchInput.addEventListener("click", function (e) {
+    e.stopPropagation(); // Предотвращаем всплытие события
+  });
+
+  // Обработчик клика по всему контейнеру .search__input
+  let searchInputContainer = document.querySelector('.search__input');
+  if (searchInputContainer) {
+    searchInputContainer.addEventListener("click", function (e) {
+      e.stopPropagation(); // Предотвращаем всплытие события
+      let search = this.closest('.search');
+      if (search.classList.contains('_active')) {
+        searchInput.focus();
+      }
+    });
+  }
+
+  // Обработчик клика по документу для закрытия поиска
+  document.addEventListener("click", function (e) {
+    let search = document.querySelector('.search');
+    if (search && search.classList.contains('_active')) {
+      // Проверяем, что клик был за пределами поиска
+      if (!search.contains(e.target)) {
+        search.classList.remove('_active');
+      }
+    }
+  });
+
+  // Обработчик для ресайза окна (закрываем поиск при переходе на мобильную версию)
+  window.addEventListener('resize', function () {
+    let search = document.querySelector('.search');
+    if (search && window.innerWidth <= 1200 && search.classList.contains('_active')) {
+      search.classList.remove('_active');
+    }
   });
 }
 
@@ -849,7 +916,7 @@ function initCalculatorSwitcher() {
         });
       } catch (error) {
       }
-    } 
+    }
 
     const horizSlider = document.querySelector('.range-horiz');
     if (horizSlider) {
@@ -962,7 +1029,7 @@ function initCalculatorSwitcher() {
     initSliders(windowNumber);
 
     currentWindow = windowNumber;
-    isInitialized = true; 
+    isInitialized = true;
   }
 
   function handleResize() {
