@@ -2321,22 +2321,34 @@ a {
   -webkit-transition: background-color 0.3s, color 0.3s;
   transition: background-color 0.3s, color 0.3s;
   z-index: 100;
+}
+.header::before {
+  content: "";
+  position: absolute;
+  top: -env(safe-area-inset-top);
+  left: 0;
+  width: 100%;
+  height: env(safe-area-inset-top);
+  background-color: var(--white);
+}
+
+.header-content {
   padding-top: env(safe-area-inset-top);
-  height: calc(244px + env(safe-area-inset-top));
+  height: 243px;
 }
 @media (max-width: 1200px) {
-  .header {
-    height: calc(168px + env(safe-area-inset-top));
+  .header-content {
+    height: 168px;
   }
 }
 @media (max-width: 768px) {
-  .header {
-    height: calc(130px + env(safe-area-inset-top));
+  .header-content {
+    height: 130px;
   }
 }
 @media (max-width: 370px) {
-  .header {
-    height: calc(125px + env(safe-area-inset-top));
+  .header-content {
+    height: 125px;
   }
 }
 
