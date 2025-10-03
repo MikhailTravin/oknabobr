@@ -2321,7 +2321,25 @@ a {
   -webkit-transition: background-color 0.3s, color 0.3s;
   transition: background-color 0.3s, color 0.3s;
   z-index: 100;
+  padding-top: env(safe-area-inset-top);
+  height: calc(244px + env(safe-area-inset-top));
 }
+@media (max-width: 1200px) {
+  .header {
+    height: calc(168px + env(safe-area-inset-top));
+  }
+}
+@media (max-width: 768px) {
+  .header {
+    height: calc(130px + env(safe-area-inset-top));
+  }
+}
+@media (max-width: 370px) {
+  .header {
+    height: calc(125px + env(safe-area-inset-top));
+  }
+}
+
 .top-header {
   background: #f7f2ec;
   padding: 10px 0px;
@@ -4940,6 +4958,12 @@ a {
   .block-compare__name::before {
     top: 16px;
     left: 16px;
+  }
+}
+@media (max-width: 480px) {
+  .block-compare__name::before {
+    top: 10px;
+    left: 10px;
   }
 }
 .block-compare__name:nth-child(2) {
