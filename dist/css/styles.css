@@ -4993,6 +4993,9 @@ a {
     -ms-flex-wrap: nowrap;
         flex-wrap: nowrap;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-scroll-snap-type: x mandatory;
+        scroll-snap-type: x mandatory;
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
@@ -5018,6 +5021,7 @@ a {
 }
 @media (max-width: 1200px) {
   .block-compare__table {
+    scroll-snap-align: start;
     -webkit-box-flex: 0;
         -ms-flex: 0 0 220px;
             flex: 0 0 220px;
